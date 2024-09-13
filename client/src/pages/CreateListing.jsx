@@ -32,7 +32,7 @@ function CreateListing() {
 
   const navigate = useNavigate();
 
-  const currentUser = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
 
   console.log(formData);
   const handleImageSubmit = () => {
@@ -78,7 +78,7 @@ function CreateListing() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress} don`);
+          console.log(`Upload is ${progress} done`);
         },
         (error) => {
           reject(error);
@@ -133,16 +133,19 @@ function CreateListing() {
       const res = await fetch("/api/listing/create", {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ ...formData, userRef: currentUser._id }),
+        body: JSON.stringify({
+          ...formData,
+          userRef: currentUser._id,
+        }),
       });
 
       const data = await res.json();
-
+      console.log(data);
       setLoading(false);
       if (data.success === false) {
         setError(data.message);
       }
-      navigate(`/listing/${data._id}`);
+      navigate(`/listings/${data._id}`);
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -198,6 +201,7 @@ function CreateListing() {
               />
               <span>Sell</span>
             </div>
+
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -208,6 +212,7 @@ function CreateListing() {
               />
               <span>Rent</span>
             </div>
+
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -218,6 +223,7 @@ function CreateListing() {
               />
               <span>Parking spot</span>
             </div>
+
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -228,6 +234,7 @@ function CreateListing() {
               />
               <span>Furnished</span>
             </div>
+
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -239,6 +246,7 @@ function CreateListing() {
               <span>Offer</span>
             </div>
           </div>
+
           <div className="flex flex-wrap gap-6">
             <div className="flex items-center gap-2">
               <input
@@ -305,6 +313,7 @@ function CreateListing() {
             )}
           </div>
         </div>
+
         <div className="flex flex-col flex-1 gap-4">
           <p className="font-semibold">
             Images:{" "}
@@ -312,6 +321,7 @@ function CreateListing() {
               The first image will be the cover (max 6)
             </span>
           </p>
+
           <div className="flex gap-4">
             <input
               onChange={(e) => setFiles(e.target.files)}
@@ -321,6 +331,7 @@ function CreateListing() {
               accept="image/*"
               multiple
             />
+
             <button
               className="p-3 text-green-700 border border-green-700 rounded hover:shadow-lg disabled:opacity-80"
               disabled={uploading}
@@ -330,6 +341,7 @@ function CreateListing() {
               {uploading ? "Uploading..." : "Upload"}
             </button>
           </div>
+
           <p className="text-red-700 text-sm">
             {imageUploadError && imageUploadError}
           </p>
