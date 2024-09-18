@@ -23,7 +23,9 @@ import { Link } from "react-router-dom";
 
 function Profile() {
   const fileRef = useRef(null);
+
   const { currentUser, loading, error } = useSelector((state) => state.user);
+
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
@@ -31,6 +33,7 @@ function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
+
   const dispatch = useDispatch();
 
   // firebase storage
@@ -286,7 +289,7 @@ function Profile() {
                 to={`/listing/${listing._id}`}
                 className="flex-1 text-slate-700 font-semibold  hover:underline truncate"
               >
-                <p>{listing.name}</p>
+                <p className="truncate">{listing.name}</p>
               </Link>
 
               <div className="flex flex-col items-center">
